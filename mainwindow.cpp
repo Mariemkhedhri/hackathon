@@ -17,7 +17,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    // إعدادات الجدول
     ui->tableWidget->setColumnCount(6);
     ui->tableWidget->setHorizontalHeaderLabels({"Nom de l'équipe", "Compétition", "Chef d'équipe", "Membres", "Date d'inscription", "Statut"});
     ui->tableWidget->verticalHeader()->setVisible(false);
@@ -27,14 +26,11 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->tableWidget->setEnabled(true);
 
-    // تحميل الفرق وعرض الصفحة الأولى
     initialiserToutesLesEquipes();
     chargerPage(1);
 
-    // ربط ضغطة السطر في الجدول لعرض التفاصيل
     connect(ui->tableWidget, &QTableWidget::cellClicked, this, &MainWindow::onTeamSelected);
 
-    // ربط أزرار التنقل بين الصفحات
     connect(ui->btn1, &QPushButton::clicked, this, [=](){ chargerPage(1); });
     connect(ui->btn2, &QPushButton::clicked, this, [=](){ chargerPage(2); });
     connect(ui->btn3, &QPushButton::clicked, this, [=](){ chargerPage(3); });
@@ -43,15 +39,12 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->btnPrev, &QPushButton::clicked, this, [=](){ chargerPage(qMax(1, currentPage - 1)); });
     connect(ui->btnNext, &QPushButton::clicked, this, [=](){ chargerPage(qMin(4, currentPage + 1)); });
 
-    // ربط بارة البحث
     connect(ui->lineEdit, &QLineEdit::textChanged, this, &MainWindow::filtrerEquipes);
 
-    // ربط القوائم المنسدلة للفلترة والترتيب
     connect(ui->comboBoxCompetition, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::filtrerParComboBox);
     connect(ui->comboBoxStatus, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::filtrerParComboBox);
     connect(ui->comboBoxTrier, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &MainWindow::filtrerParComboBox);
 
-    // ربط زر إضافة فريق جديد
     connect(ui->btnAjouter, &QPushButton::clicked, this, &MainWindow::on_btnAjouter_clicked);
 }
 
@@ -60,7 +53,6 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-// دالة تحميل الصفحة وعرض الفرق
 void MainWindow::chargerPage(int page) {
     int totalPages = 4;
     if (page < 1 || page > totalPages) return;
@@ -120,7 +112,6 @@ void MainWindow::chargerPage(int page) {
     }
 }
 
-// دالة عرض تفاصيل الفريق عند النقر
 void MainWindow::onTeamSelected(int row, int column) {
     Q_UNUSED(column);
 
@@ -144,7 +135,6 @@ void MainWindow::onTeamSelected(int row, int column) {
     QMessageBox::information(this, "Détails de l'équipe", details);
 }
 
-// دالة فتح نافذة إضافة فريق جديد عند الضغط على الزر
 void MainWindow::on_btnAjouter_clicked() {
     QDialog dialog(this);
     dialog.setWindowTitle("Ajouter une équipe");
@@ -198,7 +188,6 @@ void MainWindow::on_btnAjouter_clicked() {
     }
 }
 
-// دالة البحث والفلترة عبر الـ QLineEdit
 void MainWindow::filtrerEquipes(const QString &text) {
     if (text.isEmpty()) {
         chargerPage(currentPage);
@@ -263,7 +252,6 @@ void MainWindow::filtrerEquipes(const QString &text) {
     }
 }
 
-// دالة الفلترة والترتيب عبر القوائم المنسدلة (ComboBox)
 void MainWindow::filtrerParComboBox() {
     QString compFiltre = ui->comboBoxCompetition->currentText();
     QString statutFiltre = ui->comboBoxStatus->currentText();
@@ -342,7 +330,6 @@ void MainWindow::filtrerParComboBox() {
     }
 }
 
-// قائمة الفرق وتعبئة قائمة المسابقات أوتوماتيكياً
 void MainWindow::initialiserToutesLesEquipes() {
     toutesLesEquipes.append({"Matrix ReLoaded", "Cyber Security Jam", "Mariem Khedhri", "5/5", "25/10/2026", "Active"});
     toutesLesEquipes.append({"Bit Shifters", "IoT Challenge", "Omar Sghaier", "4/4", "26/10/2026", "Active"});
