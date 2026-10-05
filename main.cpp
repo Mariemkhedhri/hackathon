@@ -7,7 +7,6 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    // فرض النمط الفاتح وتجنب الـ Dark Mode متاع الويندوز
     a.setStyle(QStyleFactory::create("Fusion"));
     QPalette lightPalette;
     lightPalette.setColor(QPalette::Window, QColor(0xF8FAFC));
@@ -21,18 +20,16 @@ int main(int argc, char *argv[])
     lightPalette.setColor(QPalette::HighlightedText, QColor(0xFFFFFF));
     a.setPalette(lightPalette);
 
-    // تطبيق الـ Stylesheet الخاص بالواجهة
+
     a.setStyleSheet(R"(
         QMainWindow {
             background-color: #F8FAFC;
         }
 
-        /* الـ Sidebar باللون الداكن الأنيق */
         QWidget#sidebar {
             background-color: #0F172A;
         }
 
-        /* أزرار الـ Sidebar */
         QWidget#sidebar QPushButton {
             color: #94A3B8;
             background-color: transparent;
@@ -48,7 +45,6 @@ int main(int argc, char *argv[])
             color: #FFFFFF;
         }
 
-        /* الجدول وباقي العناصر تظهر بيضاء ونظيفة */
         QTableWidget {
             background-color: #FFFFFF;
             gridline-color: #F1F5F9;
